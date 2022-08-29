@@ -1,25 +1,21 @@
 package ru.job4j.passport.service;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Repository;
+import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.*;
 import ru.job4j.passport.model.Passport;
 import ru.job4j.passport.repository.PassportRepository;
 
-import java.time.LocalDate;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
 @Service
 public class PassportService {
-
+    private final KafkaTemplate<Integer, String> kafkaTemplate;
     private final PassportRepository passportRepository;
 
-    public PassportService(PassportRepository passportRepository) {
+    public PassportService(KafkaTemplate<Integer, String> kafkaTemplate, PassportRepository passportRepository) {
+        this.kafkaTemplate = kafkaTemplate;
         this.passportRepository = passportRepository;
     }
 
@@ -42,9 +38,13 @@ public class PassportService {
     public Passport delete(int id) {
         return passportRepository.delete(id);
     }
-
+    @Scheduled(fixedDelay = 10000)
     public List<Passport> expired() {
-        return passportRepository.expired();
+        Optional<List<Passport>> expired = Optional.of(passportRepository.expired());
+        if (expired.isPresent()) {
+            kafkaTemplate.send("expired", expired.get().toString());
+        }
+        return expired.orElse(null);
     }
 
     public List<Passport> expiredFor3Months() {

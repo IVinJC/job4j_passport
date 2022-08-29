@@ -2,6 +2,7 @@ package ru.job4j.passport.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.*;
 import ru.job4j.passport.model.Passport;
 import ru.job4j.passport.service.PassportService;
