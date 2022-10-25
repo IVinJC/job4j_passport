@@ -1,5 +1,6 @@
 package ru.job4j.passport.service;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -10,14 +11,10 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class PassportService {
     private final KafkaTemplate<Integer, String> kafkaTemplate;
     private final PassportRepository passportRepository;
-
-    public PassportService(KafkaTemplate<Integer, String> kafkaTemplate, PassportRepository passportRepository) {
-        this.kafkaTemplate = kafkaTemplate;
-        this.passportRepository = passportRepository;
-    }
 
     public Passport create(Passport passport) {
         return passportRepository.create(passport);

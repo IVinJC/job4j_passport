@@ -1,8 +1,8 @@
 package ru.job4j.passport.controller;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.*;
 import ru.job4j.passport.model.Passport;
 import ru.job4j.passport.service.PassportService;
@@ -10,14 +10,9 @@ import ru.job4j.passport.service.PassportService;
 import java.util.List;
 
 @RestController
+@RequiredArgsConstructor
 public class PassportController {
-
     private final PassportService passportService;
-
-    public PassportController(PassportService passportService) {
-        this.passportService = passportService;
-    }
-
 
     @PostMapping
     public ResponseEntity<Void> create(@RequestBody Passport passport) {
@@ -26,7 +21,7 @@ public class PassportController {
     }
 
     @GetMapping("/find")
-    public ResponseEntity<Void> getByName(@RequestParam int serial) {
+    public ResponseEntity<Void> getByName(@RequestParam("serial") int serial) {
         boolean status = passportService.getByName(serial);
         return ResponseEntity.status(status ? HttpStatus.OK : HttpStatus.NOT_FOUND).build();
     }

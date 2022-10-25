@@ -9,5 +9,4 @@ public class Job4jPassportApplication {
     public static void main(String[] args) {
         SpringApplication.run(Job4jPassportApplication.class, args);
     }
-
 }

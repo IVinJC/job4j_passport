@@ -43,14 +43,14 @@ public class PassportRepository {
     public List<Passport> expired() {
         return passportsMap.values()
                 .stream()
-                .filter(passport -> passport.getExpired().isAfter(LocalDate.now()))
+                .filter(passport -> passport.getExpired().isBefore(LocalDate.now()))
                 .collect(Collectors.toList());
     }
 
     public List<Passport> expiredFor3Months() {
         return passportsMap.values()
                 .stream()
-                .filter(passport -> LocalDate.now().isAfter(passport.getExpired().minusDays(90)))
+                .filter(passport -> LocalDate.now().isBefore(passport.getExpired().minusDays(90)))
                 .collect(Collectors.toList());
     }
 }

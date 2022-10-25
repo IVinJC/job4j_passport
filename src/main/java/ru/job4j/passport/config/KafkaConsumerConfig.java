@@ -44,5 +44,4 @@ public class KafkaConsumerConfig {
         props.put(ConsumerConfig.GROUP_ID_CONFIG, kafkaGroupId);
         return props;
     }
-
 }
